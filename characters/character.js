@@ -1,4 +1,5 @@
 const Spell = require("../spells/spell");
+const Weapon = require("../weapons/weapon");
 
 class Character {
     constructor(name, className, attack, magic, defense, speed, health, mana) {
@@ -46,8 +47,8 @@ class Character {
             const spellDamage = this.castSpell.power;
             const magicDamage = this.magic;
             return spellDamage + magicDamage;
-        } else if(this.weapons > 0) {
-            const weaponDamage = this.weapons[0].damage;
+        } else if(this.equippedWeapon) {
+            const weaponDamage = this.equippedWeapon.damage;
             const attackDamage = this.attack;
             return weaponDamage + attackDamage;
         }
@@ -72,6 +73,15 @@ class Character {
             if (spell.name === spellName) {
                 this.castSpell = spell;
                 this.mana = this.mana - this.castSpell.mana
+            }
+        }
+    }
+
+    equipWeapon(weaponName) {
+        for(let i = 0; i < this.weapons.length;i++) {
+            const weapon = this.weapons[i];
+            if (weapon.name === weaponName) {
+                this.equippedWeapon = weapon;
             }
         }
     }

@@ -2,7 +2,7 @@ const Pet = require("./pet");
 const Character = require("./character");
 const ironfoe = require("../weapons/ironfoe");
 const healingWave = require("../spells/healingWave");
-const lightningBolt = require("../spells/lightningBolt");
+// const lightningBolt = require("../spells/lightningBolt");
 
 class Shaman extends Character {
     constructor(name) {
