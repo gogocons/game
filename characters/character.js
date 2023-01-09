@@ -14,6 +14,7 @@ class Character {
         this.mana = mana;
         this.spells = [];
         this.weapons = [];
+        this.pets = [];
         this.activePet = null;
     }
 
@@ -43,8 +44,8 @@ class Character {
             const petDamage = this.activePet.damage;
             const magicDamage = this.magic;
             return petDamage + magicDamage;
-        } else if(this.castSpell) {
-            const spellDamage = this.castSpell.power;
+        } else if(this.damageSpell) {
+            const spellDamage = this.damageSpell.power;
             const magicDamage = this.magic;
             return spellDamage + magicDamage;
         } else if(this.equippedWeapon) {
@@ -71,10 +72,25 @@ class Character {
         for(let i = 0; i < this.spells.length;i++) {
             const spell = this.spells[i];
             if (spell.name === spellName) {
-                this.castSpell = spell;
-                this.mana = this.mana - this.castSpell.mana
+                this.damageSpell = spell;
+                this.mana = this.mana - this.damageSpell.mana
             }
         }
+    }
+
+    useHealingSpell(spellName) {
+        for(let i = 0; i < this.spells.length;i++) {
+            const spell = this.spells[i];
+            if (spell.name === spellName) {
+                this.healSpell = spell;
+                this.mana = this.mana - this.healSpell.mana;
+                this.health = this.health + this.healSpell.power;
+            }
+        }
+    }
+
+    addWeapon(weapon) {
+        this.weapons.push(weapon);
     }
 
     equipWeapon(weaponName) {

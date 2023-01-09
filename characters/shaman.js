@@ -7,7 +7,6 @@ const healingWave = require("../spells/healingWave");
 class Shaman extends Character {
     constructor(name) {
         super(name, "shaman", 6, 6, 8, 3, 100, 100);
-        this.pets = [];
         const totem = new Pet("Stoneskin Totem", 0);
         this.pets.push(totem);
         this.weapons.push(ironfoe);
