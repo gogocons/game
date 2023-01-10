@@ -1,5 +1,4 @@
-const Spell = require("../spells/spell");
-const Weapon = require("../weapons/weapon");
+const config = require("../config/classNames");
 
 class Character {
     constructor(name, className, attack, magic, defense, speed, health, mana) {
@@ -20,16 +19,16 @@ class Character {
 
     levelUp() {
         this.level = this.level + 1;
-        if(this.className === "mage") {
+        if(this.className === config.classNames.MageClassName) {
             console.log("leveling up", this.className);
             this.mana = this.mana + 17;
             this.magic = this.magic + 1;
-        } else if(this.className === "shaman") {
+        } else if(this.className === config.classNames.ShamanClassName) {
             console.log("leveling up", this.className);
             this.attack = this.attack + 1;
             this.health = this.health + 11;
             this.mana = this.mana + 2;
-        } else if(this.className === "warlock") {
+        } else if(this.className === config.classNames.WarlockClassName) {
             console.log("leveling up", this.className);
             this.health = this.health + 29;
             this.mana = this.mana + 11;
