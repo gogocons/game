@@ -4,7 +4,8 @@
   "description": "Game",
   "main": "game.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify index.js -p esmify > bundle.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,8 @@
   },
   "homepage": "https://github.com/gogocons/game#readme",
   "dependencies": {
+    "browserify": "^17.0.0",
+    "esmify": "^2.1.1",
     "prompt-promise": "^1.0.3"
   }
 }
