@@ -4,6 +4,18 @@ class Mob {
         this.damage = damage;
         this.health = health;
     }
+
+    getHealth() {
+      return this.health;
+    }
+
+    getName() {
+      return this.name;
+    }
+
+    getDamage() {
+      return this.damage;
+    }
 }
 
 module.exports = Mob

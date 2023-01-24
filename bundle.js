@@ -131,7 +131,7 @@ class Character {
 }
 
 module.exports = Character
-},{"../config/classNames":6}],2:[function(require,module,exports){
+},{"../config/classNames":7}],2:[function(require,module,exports){
 const config = require("../config/classNames");
 const fireball = require("../spells/fireball");
 const Character = require("./character");
@@ -146,7 +146,7 @@ class Mage extends Character {
 }
 
 module.exports = Mage;
-},{"../config/classNames":6,"../spells/fireball":8,"./character":1}],3:[function(require,module,exports){
+},{"../config/classNames":7,"../spells/fireball":16,"./character":1}],3:[function(require,module,exports){
 class Pet {
     constructor(name, damage) {
         this.name = name;
@@ -180,7 +180,7 @@ class Shaman extends Character {
 }
 
 module.exports = Shaman;
-},{"../config/classNames":6,"../spells/healingWave":9,"../weapons/ironfoe":11,"./character":1,"./pet":3}],5:[function(require,module,exports){
+},{"../config/classNames":7,"../spells/healingWave":17,"../weapons/ironfoe":20,"./character":1,"./pet":3}],5:[function(require,module,exports){
 const config = require("../config/classNames");
 const Pet = require("./pet");
 const Character = require("./character");
@@ -197,23 +197,65 @@ class Warlock extends Character {
 }
 
 module.exports = Warlock;
-},{"../config/classNames":6,"./character":1,"./pet":3}],6:[function(require,module,exports){
-const config = {
-    classNames: {
-        MageClassName: "mage",
-        ShamanClassName: "shaman",
-        WarlockClassName: "warlock"
-    }
-}
-
-module.exports = config;
-},{}],7:[function(require,module,exports){
-// this our main game loop file
-
+},{"../config/classNames":7,"./character":1,"./pet":3}],6:[function(require,module,exports){
 const config = require("./config/classNames");
 const Mage = require("./characters/mage");
 const Shaman = require("./characters/shaman");
 const Warlock = require("./characters/warlock");
+
+function chooseClass(classType) {
+  if(classType === config.classNames.MageClassName) {
+    return new Mage("Jaina");
+  } else if(classType === config.classNames.ShamanClassName) {
+    return new Shaman("Thrall");
+  } else if(classType === config.classNames.WarlockClassName) {
+    return new Warlock("Gul'dan")
+  }
+}
+
+module.exports = chooseClass;
+},{"./characters/mage":2,"./characters/shaman":4,"./characters/warlock":5,"./config/classNames":7}],7:[function(require,module,exports){
+const config = {
+    classNames: {
+        MageClassName: "Mage",
+        ShamanClassName: "Shaman",
+        WarlockClassName: "Warlock"
+    }
+}
+
+module.exports = config;
+},{}],8:[function(require,module,exports){
+// I know I can use this function to add new things to display
+// this function should get EVERY attribute I want to diplay to the page, and add it there
+function displayCharacterInfo(character) {
+  const container = document.getElementById("character-info");
+  let characeterInfoString = `Name: ${character.getName()} <br/>`;
+  characeterInfoString += `Level ${character.getLevel()} ${character.getClassName()} <br/>`;
+  characeterInfoString += `${character.getStatsString()}`;
+  
+  container.innerHTML = characeterInfoString;
+}
+
+module.exports = displayCharacterInfo;
+},{}],9:[function(require,module,exports){
+// displayMobInfo displays the infrmation to the page for the active mob.
+function displayMobInfo(mob) {
+  const container = document.getElementById('mob-info');
+  let mobInfoString = `Name: ${mob.getName()} <br/>`;
+  mobInfoString += `Health: ${mob.getHealth()} <br/>`;
+  mobInfoString += `Damage: ${mob.getDamage()} <br/>`;
+
+  container.innerHTML = mobInfoString;
+}
+
+module.exports = displayMobInfo;
+},{}],10:[function(require,module,exports){
+// this our main game loop file
+const chooseClass = require("./chooseClass");
+const displayCharacterInfo = require("./diplayCharacterInfo");
+const mobs = require("./mobs/mobs");
+const setActiveMob = require("./setActiveMob");
+const toggleCharacterInfoDisplays = require("./toggleCharacterInfoDisplays");
 
 // 1. I want to let a user create a character from alist of my given classes.
 
@@ -222,77 +264,108 @@ const Warlock = require("./characters/warlock");
 // and an instance of that character
 let character;
 
-function chooseClass(classType) {
-  if(classType === config.classNames.MageClassName) {
-    character = new Mage("Jaina");
-  } else if(classType === config.classNames.ShamanClassName) {
-    character = new Shaman("Thrall");
-  } else if(classType === config.classNames.WarlockClassName) {
-    character = new Warlock("Gul'dan")
-  }
-}
-// takes a classType parameter of type string and initiates the characeter variable
-// to a new instance of that class this it toggles the displays, displays character info
-// and sets us up to play the game
-function initializeGame (classType) {
-  chooseClass(classType);
-  toggleCharacterInfoDisplays();
-  displayCharacterInfo(character);
-}
-
-// hides the character select container, and unhides the character info container
-function toggleCharacterInfoDisplays() {
-  const selectContainer = document.getElementById("character-select-container");
-  selectContainer.style.display = 'none';
-
-  const infoContainer = document.getElementById("character-info-container");
-  infoContainer.style.display = 'block';
-}
-
-// I know I can use this function to add new things to display
-// this function should get EVERY attribute I want to diplay to the page, and add it there
-function displayCharacterInfo(character) {
-  const container = document.getElementById("character-info");
-  let characeterInfoString = `Name: ${character.getName()} <br/>`;
-  characeterInfoString += `Level ${character.getLevel()} ${character.getClassName()} <br/>`;
-  characeterInfoString += `${character.getStatsString()}`;
-  container.innerHTML = characeterInfoString;
-
-}
+// activeMob is the monster we are currently fighting, it should be of type 'mob', from mobs/mob.js
+// and an instance of that mob, meaning one of the other classes created in that folder, such as goblin
+let activeMob;
 
 const mageButton = document.getElementById("mage");
 const shamanButton = document.getElementById("shaman");
 const warlockButton = document.getElementById("warlock");
 
 mageButton.addEventListener('click', function() {
-  console.log("button clicked mage");
-  initializeGame("mage");
+  initializeGame("Mage");
 });
 
 shamanButton.addEventListener('click', function() {
-  console.log("button clicked shaman");
-  initializeGame("shaman");
+  initializeGame("Shaman");
 });
 
 warlockButton.addEventListener('click', function() {
-  console.log("button clicked warlock");
-  initializeGame("warlock");
+  initializeGame("Warlock");
 });
 
+// takes a classType parameter of type string and initiates the characeter variable
+// to a new instance of that class this it toggles the displays, displays character info
+// and sets us up to play the game
+function initializeGame (classType) {
+  character = chooseClass(classType);
+  toggleCharacterInfoDisplays();
+  displayCharacterInfo(character);
+  startGameLoop();
+}
 
-},{"./characters/mage":2,"./characters/shaman":4,"./characters/warlock":5,"./config/classNames":6}],8:[function(require,module,exports){
+// startGameLoop assumes we have a character creat, and character info displayed on the page
+// as well as no other initialization properties, such as mobs spawned
+// it begins the game loop of spawning mobs, fighting, waiting for user input,
+// until the user wins or is dead
+function startGameLoop() {
+  const mob = mobs[0];
+  activeMob = setActiveMob(mob);
+}
+},{"./chooseClass":6,"./diplayCharacterInfo":8,"./mobs/mobs":14,"./setActiveMob":15,"./toggleCharacterInfoDisplays":19}],11:[function(require,module,exports){
+const Mob = require("./mob");
+
+const dragon = new Mob("dragon", 40, 60);
+
+module.exports = dragon;
+},{"./mob":13}],12:[function(require,module,exports){
+const Mob = require("./mob");
+
+const goblin = new Mob("goblin", 10, 29);
+
+module.exports = goblin
+},{"./mob":13}],13:[function(require,module,exports){
+class Mob {
+    constructor(name, damage, health) {
+        this.name = name;
+        this.damage = damage;
+        this.health = health;
+    }
+
+    getHealth() {
+      return this.health;
+    }
+
+    getName() {
+      return this.name;
+    }
+
+    getDamage() {
+      return this.damage;
+    }
+}
+
+module.exports = Mob
+},{}],14:[function(require,module,exports){
+const goblin = require("./goblin");
+const dragon = require("./dragon");
+
+const mobs = [goblin, dragon];
+
+module.exports = mobs;
+},{"./dragon":11,"./goblin":12}],15:[function(require,module,exports){
+const displayMobInfo = require("./displayMobInfo");
+
+// setActiveMob takes a mob class and sets the activeMob to is, and displays its information to the page
+function setActiveMob(mob) {
+  displayMobInfo(mob);
+  return mob;
+}
+
+module.exports = setActiveMob;
+},{"./displayMobInfo":9}],16:[function(require,module,exports){
 const Spell = require("./spell");
 
 const fireball = new Spell("Fireball", 6, 12);
 
 module.exports = fireball;
-},{"./spell":10}],9:[function(require,module,exports){
+},{"./spell":18}],17:[function(require,module,exports){
 const Spell = require("./spell");
 
 const healingWave = new Spell("Healing Wave", 7, 15);
 
 module.exports = healingWave;
-},{"./spell":10}],10:[function(require,module,exports){
+},{"./spell":18}],18:[function(require,module,exports){
 class Spell {
     constructor(name, power, mana) {
         this.name = name;
@@ -303,13 +376,28 @@ class Spell {
 }
 
 module.exports = Spell;
-},{}],11:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
+// hides the character select container, and unhides the character info container,
+// and the mob info container
+function toggleCharacterInfoDisplays() {
+  const selectContainer = document.getElementById("character-select-container");
+  selectContainer.style.display = 'none';
+
+  const infoContainer = document.getElementById("character-info-container");
+  infoContainer.style.display = 'inline-block';
+
+  const mobContainer = document.getElementById('mob-info-container');
+  mobContainer.style.display = 'inline-block';
+}
+
+module.exports = toggleCharacterInfoDisplays;
+},{}],20:[function(require,module,exports){
 const Weapon = require("./weapon");
 
 const ironfoe = new Weapon("Ironfoe", 5);
 
 module.exports = ironfoe;
-},{"./weapon":12}],12:[function(require,module,exports){
+},{"./weapon":21}],21:[function(require,module,exports){
 class Weapon {
     constructor(name, damage) {
         this.name = name;
@@ -318,4 +406,4 @@ class Weapon {
 }
 
 module.exports = Weapon;
-},{}]},{},[7]);
+},{}]},{},[10]);
