@@ -1,8 +1,8 @@
 const config = {
     classNames: {
-        MageClassName: "Mage",
-        ShamanClassName: "Shaman",
-        WarlockClassName: "Warlock"
+        MageClassName: "mage",
+        ShamanClassName: "shaman",
+        WarlockClassName: "warlock"
     }
 }
 

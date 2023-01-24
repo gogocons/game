@@ -1,21 +1,37 @@
 <html>
 
   <head>
-    <title>gogo game time</title>
-    <link rel="shortcut icon" href="./images/ngmi_wow.png">
+    <title>gogoborn</title>
+    <link rel="shortcut icon" href="./images/skyrim.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 
   <body id="body">
 
-    <h1>Choose a Class</h1>
+    <header class="page-header">
+      <h1>gogoborn</h1>
+      <img src="./images/skyrim.png" height="100">
+      <p>"You're finally awake."</p>
+    </header>
 
-    <button id="mage" data-class="mage">Mage</button>
-    <button id="shaman" data-class="shaman">Shaman</button>
-    <button id="warlock" data-class="warlock">Warlock</button>
+    <div id="character-select-container">
+      <h1>Choose a Class</h1>
+
+      <button id="mage" data-class="mage">Mage</button>
+      <button id="shaman" data-class="shaman">Shaman</button>
+      <button id="warlock" data-class="warlock">Warlock</button>
+    </div>
+
+    <div id="character-info-container" style="display: none;">
+      <h1>Character Info</h1>
+      <div id="character-info">
+
+      </div>
+    </div>
 
     <script src="bundle.js"></script>
   </body>

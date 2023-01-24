@@ -1,4 +1,14 @@
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: grey;
+  background-color: rgb(238, 214, 147);
+}
+
+.page-header {
+  text-align: center;
+  padding: 0 0 1px;
+  background: linear-gradient(0deg, rgb(88, 55, 22) 0%, rgb(12, 14, 15) 100%);
+  border-radius: 1rem;
+  color: rgb(143, 154, 161);
+  text-transform: uppercase;
+  /* margin-bottom: 2.5rem; */
 }

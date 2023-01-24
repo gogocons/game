@@ -17,6 +17,21 @@ class Character {
         this.activePet = null;
     }
 
+    getStatsString() {
+      let str = "";
+      str += `Attack: ${this.attack} <br/>`;
+      str += `Magic: ${this.magic} <br/>`;
+      str += `Defense: ${this.defense} <br/>`;
+      str += `Speed: ${this.speed} <br/>`;
+      str += `Health: ${this.health} <br/>`;
+      str += `Mana: ${this.mana} <br/>`;
+      if(this.activePet) {
+        str += `ActivePet: ${this.activePet.getName()} <br/>`;
+      }
+
+      return str;
+    }
+
     levelUp() {
         this.level = this.level + 1;
         if(this.className === config.classNames.MageClassName) {
@@ -99,6 +114,18 @@ class Character {
                 this.equippedWeapon = weapon;
             }
         }
+    }
+
+    getName() {
+      return this.name;
+    }
+
+    getClassName() {
+      return this.className;
+    }
+
+    getLevel() {
+      return this.level;
     }
 }
 

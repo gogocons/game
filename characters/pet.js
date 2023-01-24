@@ -3,6 +3,10 @@ class Pet {
         this.name = name;
         this.damage = damage;
     }
+
+    getName() {
+      return this.name;
+    }
 }
 
 module.exports = Pet;
