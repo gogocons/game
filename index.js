@@ -1,6 +1,7 @@
 // this our main game loop file
 const chooseClass = require("./chooseClass");
 const displayCharacterInfo = require("./diplayCharacterInfo");
+const displayMobInfo = require("./displayMobInfo");
 const mobs = require("./mobs/mobs");
 const setActiveMob = require("./setActiveMob");
 const toggleCharacterInfoDisplays = require("./toggleCharacterInfoDisplays");
@@ -49,4 +50,45 @@ function initializeGame (classType) {
 function startGameLoop() {
   const mob = mobs[0];
   activeMob = setActiveMob(mob);
+
+  while(activeMob.getHealth() > 0 && character.getHealth() > 0) {
+    // fight!
+    // I want to display user choices to the page
+    displayChoices();
+
+    // then I want to wait until a user clicks them
+    waitForChoice().then(function(choice) {
+      console.log("user chose", choice);
+      const myDamage = character.getDamage();
+      const mobDamage = activeMob.getDamage();
+
+      character.health -= mobDamage;
+      mob.health -= myDamage;
+
+      displayCharacterInfo();
+      displayMobInfo();
+    });
+  }
+}
+
+function displayChoices() {
+  const container = document.getElementById('user-choices-container');
+  container.style.display = 'inline-block';
+}
+
+function waitForChoice() {
+  const fightButton = document.getElementById('fight');
+  const healButton = document.getElementById('heal');
+  const blockButton = document.getElementById('block');
+  return new Promise(function(resolve) {
+    fightButton.addEventListener('click', function() {
+      resolve('fight');
+    });
+    healButton.addEventListener('click', function() {
+      resolve('heal');
+    });
+    blockButton.addEventListener('click', function() {
+      resolve('block');
+    });
+  })
 }

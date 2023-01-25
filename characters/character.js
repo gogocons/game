@@ -127,6 +127,10 @@ class Character {
     getLevel() {
       return this.level;
     }
+
+    getHealth() {
+      return this.health;
+    }
 }
 
 module.exports = Character
