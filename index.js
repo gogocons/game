@@ -47,8 +47,10 @@ function initializeGame (classType) {
 // as well as no other initialization properties, such as mobs spawned
 // it begins the game loop of spawning mobs, fighting, waiting for user input,
 // until the user wins or is dead
-function startGameLoop() {
-  const mob = mobs[0];
+async function startGameLoop() {
+  
+  // TODO add more mobs and pick a random one here, remove mob from array if defeated.
+  const mob = mobs[1];
   activeMob = setActiveMob(mob);
 
   while(activeMob.getHealth() > 0 && character.getHealth() > 0) {
@@ -57,17 +59,19 @@ function startGameLoop() {
     displayChoices();
 
     // then I want to wait until a user clicks them
-    waitForChoice().then(function(choice) {
-      console.log("user chose", choice);
-      const myDamage = character.getDamage();
-      const mobDamage = activeMob.getDamage();
+    const choice = await waitForChoice();
 
-      character.health -= mobDamage;
-      mob.health -= myDamage;
+    // TODO refactor into a game logic function that changes action per choice
+    console.log("user chose", choice);
+    const myDamage = character.getDamage();
+    const mobDamage = activeMob.getDamage();
 
-      displayCharacterInfo();
-      displayMobInfo();
-    });
+    character.health -= mobDamage;
+    activeMob.health -= myDamage;
+
+    displayCharacterInfo(character);
+    displayMobInfo(activeMob);
+    ;
   }
 }
 
@@ -84,11 +88,13 @@ function waitForChoice() {
     fightButton.addEventListener('click', function() {
       resolve('fight');
     });
-    healButton.addEventListener('click', function() {
-      resolve('heal');
-    });
-    blockButton.addEventListener('click', function() {
-      resolve('block');
-    });
+
+    // TODO figure out what game actions I want to use
+    // healButton.addEventListener('click', function() {
+    //   resolve('heal');
+    // });
+    // blockButton.addEventListener('click', function() {
+    //   resolve('block');
+    // });
   })
 }

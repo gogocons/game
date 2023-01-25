@@ -23,7 +23,7 @@ class Character {
       str += `Magic: ${this.magic} <br/>`;
       str += `Defense: ${this.defense} <br/>`;
       str += `Speed: ${this.speed} <br/>`;
-      str += `Health: ${this.health} <br/>`;
+      str += `Health: ${this.getHealth()} <br/>`;
       str += `Mana: ${this.mana} <br/>`;
       if(this.activePet) {
         str += `ActivePet: ${this.activePet.getName()} <br/>`;
@@ -129,7 +129,11 @@ class Character {
     }
 
     getHealth() {
-      return this.health;
+      if(this.health < 0) {
+        return 'Dead';
+      } else {
+        return this.health;
+      }
     }
 }
 

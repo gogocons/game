@@ -6,7 +6,11 @@ class Mob {
     }
 
     getHealth() {
-      return this.health;
+      if(this.health < 0) {
+        return 'Dead';
+      } else {
+        return this.health;
+      }
     }
 
     getName() {
