@@ -5,12 +5,14 @@ body {
 
 .page-header {
   text-align: center;
-  padding: 0 0 1px;
+  display: flex;
+  align-items: center;
   background: linear-gradient(0deg, rgb(88, 55, 22) 0%, rgb(12, 14, 15) 100%);
   border-radius: 1rem;
   color: rgb(143, 154, 161);
   text-transform: uppercase;
-  /* margin-bottom: 1%; */
+  justify-content: center;
+  margin: 0 0 1% 0;
 }
 
 .interact-box {
@@ -20,7 +22,7 @@ body {
 
 .info-box {
   padding: 1%;
-  margin: 1% 1% 0 0;
+  margin: 0 1% 0 0;
   border-style: outset;
 }
 
