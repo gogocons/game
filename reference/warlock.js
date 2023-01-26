@@ -1,6 +1,6 @@
 const config = require("../config/classNames");
 const Pet = require("./pet");
-const Character = require("./character");
+const Character = require("../characters/character");
 
 class Warlock extends Character {
     constructor(name) {

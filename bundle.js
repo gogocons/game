@@ -1,5 +1,20 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const config = require("../config/classNames");
+const bow = require("../weapons/bow");
+const Character = require("./character");
+
+class Assassin extends Character {
+    constructor(name) {
+        super(name, config.classNames.AssassinClassName, 10, 1, 3, 10, 100, 100);
+        this.weapons.push(bow);
+        // above gives a starting weapon, below automatically equips it
+        this.equippedWeapon = bow;
+    }
+}
+
+module.exports = Assassin;
+},{"../config/classNames":5,"../weapons/bow":18,"./character":2}],2:[function(require,module,exports){
+const config = require("../config/classNames");
 
 class Character {
     constructor(name, className, attack, magic, defense, speed, health, mana) {
@@ -14,10 +29,9 @@ class Character {
         this.mana = mana;
         this.spells = [];
         this.weapons = [];
-        this.pets = [];
-        this.activePet = null;
     }
 
+    // used for GUI character stats
     getStatsString() {
       let str = "";
       str += `Attack: ${this.attack} <br/>`;
@@ -26,40 +40,33 @@ class Character {
       str += `Speed: ${this.speed} <br/>`;
       str += `Health: ${this.getHealth()} <br/>`;
       str += `Mana: ${this.mana} <br/>`;
-      if(this.activePet) {
-        str += `ActivePet: ${this.activePet.getName()} <br/>`;
-      }
-
+      // space for additional info, if required
       return str;
     }
 
+    // TODO fix this section based on new classes made and order 
     levelUp() {
         this.level = this.level + 1;
-        if(this.className === config.classNames.MageClassName) {
+        if(this.className === config.classNames.WarriorClassName) {
             console.log("leveling up", this.className);
             this.mana = this.mana + 17;
             this.magic = this.magic + 1;
-        } else if(this.className === config.classNames.ShamanClassName) {
+        } else if(this.className === config.classNames.AssassinClassName) {
             console.log("leveling up", this.className);
             this.attack = this.attack + 1;
             this.health = this.health + 11;
             this.mana = this.mana + 2;
-        } else if(this.className === config.classNames.WarlockClassName) {
+        } else if(this.className === config.classNames.MageClassName) {
             console.log("leveling up", this.className);
             this.health = this.health + 29;
             this.mana = this.mana + 11;
             this.spedd = this.speed + 1;
-        }
+        } 
     }
 
+    // this will return characters damage of base stat plus equipment/spell
     getDamage() {
-        // I need a way to keep track of a users active pet. if they have one, we get the 
-        // pets damage and add it to the characters magic damage.
-        if(this.activePet) {
-            const petDamage = this.activePet.damage;
-            const magicDamage = this.magic;
-            return petDamage + magicDamage;
-        } else if(this.damageSpell) {
+        if(this.damageSpell) {
             const spellDamage = this.damageSpell.power;
             const magicDamage = this.magic;
             return spellDamage + magicDamage;
@@ -71,18 +78,7 @@ class Character {
 
     }
 
-    summonPet(petName) {
-        // if we have a pet in our this.pets array, that matches the name passed in as an
-        // argument to this function, lets summon it.
-        // we can loop over the pets we have to find it.
-        for(let i = 0; i < this.pets.length;i++) {
-            const pet = this.pets[i];  // this pet is equal to an individual pet element in our pets array
-            if (pet.name === petName) {
-                this.activePet = pet;
-            }
-        }
-    }
-
+    // this is for removing mana from character after using a spell
     useDamageSpell(spellName) {
         for(let i = 0; i < this.spells.length;i++) {
             const spell = this.spells[i];
@@ -93,21 +89,12 @@ class Character {
         }
     }
 
-    useHealingSpell(spellName) {
-        for(let i = 0; i < this.spells.length;i++) {
-            const spell = this.spells[i];
-            if (spell.name === spellName) {
-                this.healSpell = spell;
-                this.mana = this.mana - this.healSpell.mana;
-                this.health = this.health + this.healSpell.power;
-            }
-        }
-    }
-
+    // NEED? this is to add a new weapon to character
     addWeapon(weapon) {
         this.weapons.push(weapon);
     }
 
+    // NEED? this is to equipment different weapons in a characters inventory
     equipWeapon(weaponName) {
         for(let i = 0; i < this.weapons.length;i++) {
             const weapon = this.weapons[i];
@@ -130,7 +117,7 @@ class Character {
     }
 
     getHealth() {
-      if(this.health < 0) {
+      if(this.health <= 0) {
         return 'Dead';
       } else {
         return this.health;
@@ -139,7 +126,7 @@ class Character {
 }
 
 module.exports = Character
-},{"../config/classNames":7}],2:[function(require,module,exports){
+},{"../config/classNames":5}],3:[function(require,module,exports){
 const config = require("../config/classNames");
 const fireball = require("../spells/fireball");
 const Character = require("./character");
@@ -154,117 +141,47 @@ class Mage extends Character {
 }
 
 module.exports = Mage;
-},{"../config/classNames":7,"../spells/fireball":16,"./character":1}],3:[function(require,module,exports){
-class Pet {
-    constructor(name, damage) {
-        this.name = name;
-        this.damage = damage;
-    }
-
-    getName() {
-      return this.name;
-    }
-}
-
-module.exports = Pet;
-},{}],4:[function(require,module,exports){
+},{"../config/classNames":5,"../spells/fireball":16,"./character":2}],4:[function(require,module,exports){
 const config = require("../config/classNames");
-const Pet = require("./pet");
+const sword = require("../weapons/sword");
 const Character = require("./character");
-const ironfoe = require("../weapons/ironfoe");
-const healingWave = require("../spells/healingWave");
-// const lightningBolt = require("../spells/lightningBolt");
 
-class Shaman extends Character {
+class Warrior extends Character {
     constructor(name) {
-        super(name, config.classNames.ShamanClassName, 6, 6, 8, 3, 100, 100);
-        const totem = new Pet("Stoneskin Totem", 0);
-        this.pets.push(totem);
-        this.weapons.push(ironfoe);
+        super(name, config.classNames.WarriorClassName, 5, 1, 10, 2, 150, 100);
+        this.weapons.push(sword);
         // above gives a starting weapon, below automatically equips it
-        this.equippedWeapon = ironfoe;
-        this.spells.push(healingWave);
+        this.equippedWeapon = sword;
     }
 }
 
-module.exports = Shaman;
-},{"../config/classNames":7,"../spells/healingWave":17,"../weapons/ironfoe":20,"./character":1,"./pet":3}],5:[function(require,module,exports){
-const config = require("../config/classNames");
-const Pet = require("./pet");
-const Character = require("./character");
-
-class Warlock extends Character {
-    constructor(name) {
-        super(name, config.classNames.WarlockClassName, 3, 3, 7, 5, 200, 100);
-        // every warlock starts with an imp as its first pet!
-        const demon = new Pet("Imp", 4);
-        this.pets.push(demon);
-        // above gives a starter pet, below summons pet automatically (temporary solution)
-        this.activePet = demon;
-    }
-}
-
-module.exports = Warlock;
-},{"../config/classNames":7,"./character":1,"./pet":3}],6:[function(require,module,exports){
-const config = require("./config/classNames");
-const Mage = require("./characters/mage");
-const Shaman = require("./characters/shaman");
-const Warlock = require("./characters/warlock");
-
-function chooseClass(classType) {
-  if(classType === config.classNames.MageClassName) {
-    return new Mage("Jaina");
-  } else if(classType === config.classNames.ShamanClassName) {
-    return new Shaman("Thrall");
-  } else if(classType === config.classNames.WarlockClassName) {
-    return new Warlock("Gul'dan")
-  }
-}
-
-module.exports = chooseClass;
-},{"./characters/mage":2,"./characters/shaman":4,"./characters/warlock":5,"./config/classNames":7}],7:[function(require,module,exports){
+module.exports = Warrior;
+},{"../config/classNames":5,"../weapons/sword":19,"./character":2}],5:[function(require,module,exports){
 const config = {
     classNames: {
-        MageClassName: "Mage",
-        ShamanClassName: "Shaman",
-        WarlockClassName: "Warlock"
+      WarriorClassName: "Warrior",
+      AssassinClassName: "Assassin",  
+      MageClassName: "Mage",
     }
 }
 
 module.exports = config;
-},{}],8:[function(require,module,exports){
-// I know I can use this function to add new things to display
-// this function should get EVERY attribute I want to diplay to the page, and add it there
-function displayCharacterInfo(character) {
-  const container = document.getElementById("character-info");
-  let characeterInfoString = `Name: ${character.getName()} <br/>`;
-  characeterInfoString += `Level ${character.getLevel()} ${character.getClassName()} <br/>`;
-  characeterInfoString += `${character.getStatsString()}`;
-  
-  container.innerHTML = characeterInfoString;
-}
+},{}],6:[function(require,module,exports){
+"use strict";
 
-module.exports = displayCharacterInfo;
-},{}],9:[function(require,module,exports){
-// displayMobInfo displays the infrmation to the page for the active mob.
-function displayMobInfo(mob) {
-  const container = document.getElementById('mob-info');
-  let mobInfoString = `Name: ${mob.getName()} <br/>`;
-  mobInfoString += `Health: ${mob.getHealth()} <br/>`;
-  mobInfoString += `Damage: ${mob.getDamage()} <br/>`;
-
-  container.innerHTML = mobInfoString;
-}
-
-module.exports = displayMobInfo;
-},{}],10:[function(require,module,exports){
 // this our main game loop file
-const chooseClass = require("./chooseClass");
-const displayCharacterInfo = require("./diplayCharacterInfo");
-const displayMobInfo = require("./displayMobInfo");
+
+// modules import
+const chooseClass = require("./modules/chooseClass");
+const displayCharacterInfo = require("./modules/diplayCharacterInfo");
+const displayMobInfo = require("./modules/displayMobInfo");
 const mobs = require("./mobs/mobs");
-const setActiveMob = require("./setActiveMob");
-const toggleCharacterInfoDisplays = require("./toggleCharacterInfoDisplays");
+const setActiveMob = require("./modules/setActiveMob");
+const toggleCharacterInfoDisplays = require("./modules/toggleCharacterInfoDisplays");
+
+// other variables for code readability
+const characterImage = document.getElementById("character-image");
+const mobImage = document.getElementById("mob-image");
 
 // 1. I want to let a user create a character from alist of my given classes.
 
@@ -276,27 +193,23 @@ let character;
 // activeMob is the monster we are currently fighting, it should be of type 'mob', from mobs/mob.js
 // and an instance of that mob, meaning one of the other classes created in that folder, such as goblin
 let activeMob;
-
+const warriorButton = document.getElementById("warrior");
+const assassinButton = document.getElementById("assassin");
 const mageButton = document.getElementById("mage");
-const shamanButton = document.getElementById("shaman");
-const warlockButton = document.getElementById("warlock");
-
-mageButton.addEventListener('click', function() {
+warriorButton.addEventListener('click', function () {
+  initializeGame("Warrior");
+});
+assassinButton.addEventListener('click', function () {
+  initializeGame("Assassin");
+});
+mageButton.addEventListener('click', function () {
   initializeGame("Mage");
-});
-
-shamanButton.addEventListener('click', function() {
-  initializeGame("Shaman");
-});
-
-warlockButton.addEventListener('click', function() {
-  initializeGame("Warlock");
 });
 
 // takes a classType parameter of type string and initiates the characeter variable
 // to a new instance of that class this it toggles the displays, displays character info
 // and sets us up to play the game
-function initializeGame (classType) {
+function initializeGame(classType) {
   character = chooseClass(classType);
   toggleCharacterInfoDisplays();
   displayCharacterInfo(character);
@@ -308,12 +221,10 @@ function initializeGame (classType) {
 // it begins the game loop of spawning mobs, fighting, waiting for user input,
 // until the user wins or is dead
 async function startGameLoop() {
-  
   // TODO add more mobs and pick a random one here, remove mob from array if defeated.
-  const mob = mobs[1];
+  const mob = mobs[0];
   activeMob = setActiveMob(mob);
-
-  while(activeMob.getHealth() > 0 && character.getHealth() > 0) {
+  while (activeMob.getHealth() > 0 && character.getHealth() > 0) {
     // fight!
     // I want to display user choices to the page
     displayChoices();
@@ -322,31 +233,32 @@ async function startGameLoop() {
     const choice = await waitForChoice();
 
     // TODO refactor into a game logic function that changes action per choice
-    console.log("user chose", choice);
     const myDamage = character.getDamage();
     const mobDamage = activeMob.getDamage();
-
     character.health -= mobDamage;
     activeMob.health -= myDamage;
-
     displayCharacterInfo(character);
     displayMobInfo(activeMob);
     ;
   }
-}
 
+  // TODO add function to get new mob, levelup feature
+  console.log("DEBUG: Mob Dead!");
+}
 function displayChoices() {
   const container = document.getElementById('user-choices-container');
   container.style.display = 'inline-block';
 }
-
 function waitForChoice() {
   const fightButton = document.getElementById('fight');
   const healButton = document.getElementById('heal');
   const blockButton = document.getElementById('block');
-  return new Promise(function(resolve) {
-    fightButton.addEventListener('click', function() {
+  return new Promise(function (resolve) {
+    fightButton.addEventListener('click', function () {
       resolve('fight');
+      const animationID = 'animation-fight';
+      triggerAnimation(characterImage, animationID);
+      triggerAnimation(mobImage, animationID);
     });
 
     // TODO figure out what game actions I want to use
@@ -356,30 +268,41 @@ function waitForChoice() {
     // blockButton.addEventListener('click', function() {
     //   resolve('block');
     // });
-  })
+  });
 }
-},{"./chooseClass":6,"./diplayCharacterInfo":8,"./displayMobInfo":9,"./mobs/mobs":14,"./setActiveMob":15,"./toggleCharacterInfoDisplays":19}],11:[function(require,module,exports){
+
+function triggerAnimation(target, animationID) {
+  target.classList.add(animationID);
+  function removeAnimation() {
+    target.classList.remove(animationID);
+  }
+  // timeout is set to same time as animation length
+  setTimeout(removeAnimation, 500);
+}
+
+},{"./mobs/mobs":10,"./modules/chooseClass":11,"./modules/diplayCharacterInfo":12,"./modules/displayMobInfo":13,"./modules/setActiveMob":14,"./modules/toggleCharacterInfoDisplays":15}],7:[function(require,module,exports){
 const Mob = require("./mob");
 
-const dragon = new Mob("dragon", 40, 60);
+const bandit = new Mob("Bandit", 5, 50, "./images/Bandit_male.webp");
+
+module.exports = bandit
+},{"./mob":9}],8:[function(require,module,exports){
+const Mob = require("./mob");
+
+const dragon = new Mob("Dragon", 40, 100);
 
 module.exports = dragon;
-},{"./mob":13}],12:[function(require,module,exports){
-const Mob = require("./mob");
-
-const goblin = new Mob("goblin", 10, 29);
-
-module.exports = goblin
-},{"./mob":13}],13:[function(require,module,exports){
+},{"./mob":9}],9:[function(require,module,exports){
 class Mob {
-    constructor(name, damage, health) {
+    constructor(name, damage, health, image) {
         this.name = name;
         this.damage = damage;
         this.health = health;
+        this.image = image;
     }
 
     getHealth() {
-      if(this.health < 0) {
+      if(this.health <= 0) {
         return 'Dead';
       } else {
         return this.health;
@@ -396,47 +319,74 @@ class Mob {
 }
 
 module.exports = Mob
-},{}],14:[function(require,module,exports){
-const goblin = require("./goblin");
+},{}],10:[function(require,module,exports){
+const bandit = require("./bandit");
 const dragon = require("./dragon");
 
-const mobs = [goblin, dragon];
+// TODO need to have 5 mobs for game demo
+// list for setting up mob table
+const mobs = [bandit, dragon];
 
 module.exports = mobs;
-},{"./dragon":11,"./goblin":12}],15:[function(require,module,exports){
+},{"./bandit":7,"./dragon":8}],11:[function(require,module,exports){
+const config = require("../config/classNames");
+const Warrior = require("../characters/warrior");
+const Assassin = require("../characters/assassin");
+const Mage = require("../characters/mage");
+const characterImage = document.getElementById("character-image");
+
+function chooseClass(classType) {
+  if(classType === config.classNames.WarriorClassName) {
+    characterImage.src = "./images/ChiefBurguk.webp";
+    return new Warrior("Chief Burguk");
+  } else if(classType === config.classNames.AssassinClassName) {
+    characterImage.src = "./images/Niruin.webp";
+    return new Assassin("Niruin");
+  } else if(classType === config.classNames.MageClassName) {
+    characterImage.src = "./images/Wuunferth.webp";
+    return new Mage("Wuunferth the Unliving")
+  }
+}
+
+module.exports = chooseClass;
+},{"../characters/assassin":1,"../characters/mage":3,"../characters/warrior":4,"../config/classNames":5}],12:[function(require,module,exports){
+// I know I can use this function to add new things to display
+// this function should get EVERY attribute I want to diplay to the page, and add it there
+function displayCharacterInfo(character) {
+  const container = document.getElementById("character-info");
+  let characeterInfoString = `Name: ${character.getName()} <br/>`;
+  characeterInfoString += `Level ${character.getLevel()} ${character.getClassName()} <br/>`;
+  characeterInfoString += `${character.getStatsString()}`;
+  
+  container.innerHTML = characeterInfoString;
+}
+
+module.exports = displayCharacterInfo;
+},{}],13:[function(require,module,exports){
+// displayMobInfo displays the infrmation to the page for the active mob.
+function displayMobInfo(mob) {
+  const container = document.getElementById('mob-info');
+  let mobInfoString = `Name: ${mob.getName()} <br/>`;
+  mobInfoString += `Health: ${mob.getHealth()} <br/>`;
+  mobInfoString += `Damage: ${mob.getDamage()} <br/>`;
+
+  container.innerHTML = mobInfoString;
+}
+
+module.exports = displayMobInfo;
+},{}],14:[function(require,module,exports){
 const displayMobInfo = require("./displayMobInfo");
+const mobImage = document.getElementById("mob-image");
 
 // setActiveMob takes a mob class and sets the activeMob to is, and displays its information to the page
 function setActiveMob(mob) {
+  mobImage.src = mob.image;
   displayMobInfo(mob);
   return mob;
 }
 
 module.exports = setActiveMob;
-},{"./displayMobInfo":9}],16:[function(require,module,exports){
-const Spell = require("./spell");
-
-const fireball = new Spell("Fireball", 6, 12);
-
-module.exports = fireball;
-},{"./spell":18}],17:[function(require,module,exports){
-const Spell = require("./spell");
-
-const healingWave = new Spell("Healing Wave", 7, 15);
-
-module.exports = healingWave;
-},{"./spell":18}],18:[function(require,module,exports){
-class Spell {
-    constructor(name, power, mana) {
-        this.name = name;
-        this.level = 1;
-        this.power = power;
-        this.mana = mana;
-    }
-}
-
-module.exports = Spell;
-},{}],19:[function(require,module,exports){
+},{"./displayMobInfo":13}],15:[function(require,module,exports){
 // hides the character select container, and unhides the character info container,
 // and the mob info container
 function toggleCharacterInfoDisplays() {
@@ -451,13 +401,36 @@ function toggleCharacterInfoDisplays() {
 }
 
 module.exports = toggleCharacterInfoDisplays;
-},{}],20:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
+const Spell = require("./spell");
+
+const fireball = new Spell("Fireball", 6, 12);
+
+module.exports = fireball;
+},{"./spell":17}],17:[function(require,module,exports){
+class Spell {
+    constructor(name, power, mana) {
+        this.name = name;
+        this.level = 1;
+        this.power = power;
+        this.mana = mana;
+    }
+}
+
+module.exports = Spell;
+},{}],18:[function(require,module,exports){
 const Weapon = require("./weapon");
 
-const ironfoe = new Weapon("Ironfoe", 5);
+const bow = new Weapon("Hunting Bow", 12);
 
-module.exports = ironfoe;
-},{"./weapon":21}],21:[function(require,module,exports){
+module.exports = bow;
+},{"./weapon":20}],19:[function(require,module,exports){
+const Weapon = require("./weapon");
+
+const sword = new Weapon("Iron Sword", 5);
+
+module.exports = sword;
+},{"./weapon":20}],20:[function(require,module,exports){
 class Weapon {
     constructor(name, damage) {
         this.name = name;
@@ -466,4 +439,4 @@ class Weapon {
 }
 
 module.exports = Weapon;
-},{}]},{},[10]);
+},{}]},{},[6]);

@@ -13,10 +13,9 @@ class Character {
         this.mana = mana;
         this.spells = [];
         this.weapons = [];
-        this.pets = [];
-        this.activePet = null;
     }
 
+    // used for GUI character stats
     getStatsString() {
       let str = "";
       str += `Attack: ${this.attack} <br/>`;
@@ -25,40 +24,33 @@ class Character {
       str += `Speed: ${this.speed} <br/>`;
       str += `Health: ${this.getHealth()} <br/>`;
       str += `Mana: ${this.mana} <br/>`;
-      if(this.activePet) {
-        str += `ActivePet: ${this.activePet.getName()} <br/>`;
-      }
-
+      // space for additional info, if required
       return str;
     }
 
+    // TODO fix this section based on new classes made and order 
     levelUp() {
         this.level = this.level + 1;
-        if(this.className === config.classNames.MageClassName) {
+        if(this.className === config.classNames.WarriorClassName) {
             console.log("leveling up", this.className);
             this.mana = this.mana + 17;
             this.magic = this.magic + 1;
-        } else if(this.className === config.classNames.ShamanClassName) {
+        } else if(this.className === config.classNames.AssassinClassName) {
             console.log("leveling up", this.className);
             this.attack = this.attack + 1;
             this.health = this.health + 11;
             this.mana = this.mana + 2;
-        } else if(this.className === config.classNames.WarlockClassName) {
+        } else if(this.className === config.classNames.MageClassName) {
             console.log("leveling up", this.className);
             this.health = this.health + 29;
             this.mana = this.mana + 11;
             this.spedd = this.speed + 1;
-        }
+        } 
     }
 
+    // this will return characters damage of base stat plus equipment/spell
     getDamage() {
-        // I need a way to keep track of a users active pet. if they have one, we get the 
-        // pets damage and add it to the characters magic damage.
-        if(this.activePet) {
-            const petDamage = this.activePet.damage;
-            const magicDamage = this.magic;
-            return petDamage + magicDamage;
-        } else if(this.damageSpell) {
+        if(this.damageSpell) {
             const spellDamage = this.damageSpell.power;
             const magicDamage = this.magic;
             return spellDamage + magicDamage;
@@ -70,18 +62,7 @@ class Character {
 
     }
 
-    summonPet(petName) {
-        // if we have a pet in our this.pets array, that matches the name passed in as an
-        // argument to this function, lets summon it.
-        // we can loop over the pets we have to find it.
-        for(let i = 0; i < this.pets.length;i++) {
-            const pet = this.pets[i];  // this pet is equal to an individual pet element in our pets array
-            if (pet.name === petName) {
-                this.activePet = pet;
-            }
-        }
-    }
-
+    // this is for removing mana from character after using a spell
     useDamageSpell(spellName) {
         for(let i = 0; i < this.spells.length;i++) {
             const spell = this.spells[i];
@@ -92,21 +73,12 @@ class Character {
         }
     }
 
-    useHealingSpell(spellName) {
-        for(let i = 0; i < this.spells.length;i++) {
-            const spell = this.spells[i];
-            if (spell.name === spellName) {
-                this.healSpell = spell;
-                this.mana = this.mana - this.healSpell.mana;
-                this.health = this.health + this.healSpell.power;
-            }
-        }
-    }
-
+    // NEED? this is to add a new weapon to character
     addWeapon(weapon) {
         this.weapons.push(weapon);
     }
 
+    // NEED? this is to equipment different weapons in a characters inventory
     equipWeapon(weaponName) {
         for(let i = 0; i < this.weapons.length;i++) {
             const weapon = this.weapons[i];
@@ -129,7 +101,7 @@ class Character {
     }
 
     getHealth() {
-      if(this.health < 0) {
+      if(this.health <= 0) {
         return 'Dead';
       } else {
         return this.health;

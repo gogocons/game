@@ -1,10 +1,16 @@
 // this our main game loop file
-const chooseClass = require("./chooseClass");
-const displayCharacterInfo = require("./diplayCharacterInfo");
-const displayMobInfo = require("./displayMobInfo");
+
+// modules import
+const chooseClass = require("./modules/chooseClass");
+const displayCharacterInfo = require("./modules/diplayCharacterInfo");
+const displayMobInfo = require("./modules/displayMobInfo");
 const mobs = require("./mobs/mobs");
-const setActiveMob = require("./setActiveMob");
-const toggleCharacterInfoDisplays = require("./toggleCharacterInfoDisplays");
+const setActiveMob = require("./modules/setActiveMob");
+const toggleCharacterInfoDisplays = require("./modules/toggleCharacterInfoDisplays");
+
+// other variables for code readability
+const characterImage = document.getElementById("character-image");
+const mobImage = document.getElementById("mob-image");
 
 // 1. I want to let a user create a character from alist of my given classes.
 
@@ -17,20 +23,20 @@ let character;
 // and an instance of that mob, meaning one of the other classes created in that folder, such as goblin
 let activeMob;
 
+const warriorButton = document.getElementById("warrior");
+const assassinButton = document.getElementById("assassin");
 const mageButton = document.getElementById("mage");
-const shamanButton = document.getElementById("shaman");
-const warlockButton = document.getElementById("warlock");
+
+warriorButton.addEventListener('click', function() {
+  initializeGame("Warrior");
+});
+
+assassinButton.addEventListener('click', function() {
+  initializeGame("Assassin");
+});
 
 mageButton.addEventListener('click', function() {
   initializeGame("Mage");
-});
-
-shamanButton.addEventListener('click', function() {
-  initializeGame("Shaman");
-});
-
-warlockButton.addEventListener('click', function() {
-  initializeGame("Warlock");
 });
 
 // takes a classType parameter of type string and initiates the characeter variable
@@ -50,7 +56,7 @@ function initializeGame (classType) {
 async function startGameLoop() {
   
   // TODO add more mobs and pick a random one here, remove mob from array if defeated.
-  const mob = mobs[1];
+  const mob = mobs[0];
   activeMob = setActiveMob(mob);
 
   while(activeMob.getHealth() > 0 && character.getHealth() > 0) {
@@ -62,7 +68,6 @@ async function startGameLoop() {
     const choice = await waitForChoice();
 
     // TODO refactor into a game logic function that changes action per choice
-    console.log("user chose", choice);
     const myDamage = character.getDamage();
     const mobDamage = activeMob.getDamage();
 
@@ -73,6 +78,9 @@ async function startGameLoop() {
     displayMobInfo(activeMob);
     ;
   }
+
+  // TODO add function to get new mob, levelup feature
+  console.log("DEBUG: Mob Dead!")
 }
 
 function displayChoices() {
@@ -87,6 +95,9 @@ function waitForChoice() {
   return new Promise(function(resolve) {
     fightButton.addEventListener('click', function() {
       resolve('fight');
+      const animationID = 'animation-fight'
+      triggerAnimation(characterImage, animationID);
+      triggerAnimation(mobImage, animationID);
     });
 
     // TODO figure out what game actions I want to use
@@ -97,4 +108,13 @@ function waitForChoice() {
     //   resolve('block');
     // });
   })
+}
+
+function triggerAnimation(target, animationID) {
+  target.classList.add(animationID);
+  function removeAnimation(){
+    target.classList.remove(animationID);
+  }
+  // timeout is set to same time as animation length
+  setTimeout(removeAnimation, 500);
 }

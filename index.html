@@ -18,27 +18,35 @@
       <p>"You're finally awake."</p>
     </header>
 
-    <div id="character-select-container">
+    <div class="interact-box" id="character-select-container" style="display: inline-block;">
       <h1>Choose a Class</h1>
 
+      <button id="warrior" data-class="warrior">Warrior</button>
+      <button id="assassin" data-class="assassin">Assassin</button>
       <button id="mage" data-class="mage">Mage</button>
-      <button id="shaman" data-class="shaman">Shaman</button>
-      <button id="warlock" data-class="warlock">Warlock</button>
     </div>
 
-    <div id="character-info-container" style="display: none;">
-      <h1>Character Info</h1>
-      <div id="character-info">
+    <div class="info-containers" style="display: flex;">
 
+      <div class="info-box" id="character-info-container" style="display: none;">
+        <h1>Character Info</h1>
+        <div id="character-info"></div>
+        <div>
+          <img id="character-image" src="">
+        </div>
+      </div>
+
+      <div class="info-box" id="mob-info-container" style="display:none;">
+        <h1>Mob Info</h1>
+        <div id="mob-info"></div>
+        <div>
+          <img id="mob-image" src="">
+        </div>
       </div>
     </div>
+    
 
-    <div id="mob-info-container" style="display:none;">
-      <h1>Mob Info</h1>
-      <div id="mob-info"></div>
-    </div>
-
-    <div id="user-choices-container" style="display:none;">
+    <div class="interact-box" id="user-choices-container" style="display:none;">
       <h1>Choose a Move</h1>
       <div id="choices">
         <button id="fight">
