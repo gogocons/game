@@ -231,6 +231,7 @@ async function startGameLoop() {
 
     // then I want to wait until a user clicks them
     const choice = await waitForChoice();
+    console.log(choice);
 
     // TODO refactor into a game logic function that changes action per choice
     const myDamage = character.getDamage();
@@ -283,7 +284,7 @@ function triggerAnimation(target, animationID) {
 },{"./mobs/mobs":10,"./modules/chooseClass":11,"./modules/diplayCharacterInfo":12,"./modules/displayMobInfo":13,"./modules/setActiveMob":14,"./modules/toggleCharacterInfoDisplays":15}],7:[function(require,module,exports){
 const Mob = require("./mob");
 
-const bandit = new Mob("Bandit", 5, 50, "./images/Bandit_male.webp");
+const bandit = new Mob("Bandit", 5, 50, "./images/Bandit_male.png");
 
 module.exports = bandit
 },{"./mob":9}],8:[function(require,module,exports){
@@ -337,14 +338,14 @@ const characterImage = document.getElementById("character-image");
 
 function chooseClass(classType) {
   if(classType === config.classNames.WarriorClassName) {
-    characterImage.src = "./images/ChiefBurguk.webp";
-    return new Warrior("Chief Burguk");
+    characterImage.src = "./images/ChiefBurguk.png";
+    return new Warrior("Burguk");
   } else if(classType === config.classNames.AssassinClassName) {
-    characterImage.src = "./images/Niruin.webp";
+    characterImage.src = "./images/Niruin.png";
     return new Assassin("Niruin");
   } else if(classType === config.classNames.MageClassName) {
-    characterImage.src = "./images/Wuunferth.webp";
-    return new Mage("Wuunferth the Unliving")
+    characterImage.src = "./images/Wuunferth.png";
+    return new Mage("Wuunferth")
   }
 }
 
@@ -393,8 +394,11 @@ function toggleCharacterInfoDisplays() {
   const selectContainer = document.getElementById("character-select-container");
   selectContainer.style.display = 'none';
 
-  const infoContainer = document.getElementById("character-info-container");
-  infoContainer.style.display = 'inline-block';
+  const infoContainers = document.getElementById("info-containers");
+  infoContainers.style.display = 'flex';
+
+  const characterContainer = document.getElementById("character-info-container");
+  characterContainer.style.display = 'inline-block';
 
   const mobContainer = document.getElementById('mob-info-container');
   mobContainer.style.display = 'inline-block';

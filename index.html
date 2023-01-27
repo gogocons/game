@@ -21,26 +21,26 @@
     </header>
 
     <div class="interact-box" id="character-select-container" style="display: block;">
-      <h1>Choose a Class</h1>
+      <h2>Choose a Class</h2>
 
       <button id="warrior" data-class="warrior">Warrior</button>
       <button id="assassin" data-class="assassin">Assassin</button>
       <button id="mage" data-class="mage">Mage</button>
     </div>
 
-    <div class="info-containers" style="display: flex;">
+    <div class="info-containers" id="info-containers" style="display: none;">
 
       <div class="info-box" id="character-info-container" style="display: none;">
-        <h1>Character Info</h1>
-        <div id="character-info"></div>
+        <h2>Player</h2>
+        <div id="character-info"></div><br>
         <div>
           <img id="character-image" src="">
         </div>
       </div>
 
       <div class="info-box" id="mob-info-container" style="display:none;">
-        <h1>Mob Info</h1>
-        <div id="mob-info"></div>
+        <h2>Enemy</h2>
+        <div id="mob-info"></div><br>
         <div>
           <img id="mob-image" src="">
         </div>
@@ -49,7 +49,7 @@
     
 
     <div class="interact-box" id="user-choices-container" style="display:none;">
-      <h1>Choose a Move</h1>
+      <h2>Choose a Move</h2>
       <div id="choices">
         <button id="fight">
           Fight

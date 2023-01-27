@@ -6,14 +6,14 @@ const characterImage = document.getElementById("character-image");
 
 function chooseClass(classType) {
   if(classType === config.classNames.WarriorClassName) {
-    characterImage.src = "./images/ChiefBurguk.webp";
-    return new Warrior("Chief Burguk");
+    characterImage.src = "./images/ChiefBurguk.png";
+    return new Warrior("Burguk");
   } else if(classType === config.classNames.AssassinClassName) {
-    characterImage.src = "./images/Niruin.webp";
+    characterImage.src = "./images/Niruin.png";
     return new Assassin("Niruin");
   } else if(classType === config.classNames.MageClassName) {
-    characterImage.src = "./images/Wuunferth.webp";
-    return new Mage("Wuunferth the Unliving")
+    characterImage.src = "./images/Wuunferth.png";
+    return new Mage("Wuunferth")
   }
 }
 

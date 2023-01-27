@@ -66,6 +66,7 @@ async function startGameLoop() {
 
     // then I want to wait until a user clicks them
     const choice = await waitForChoice();
+    console.log(choice);
 
     // TODO refactor into a game logic function that changes action per choice
     const myDamage = character.getDamage();

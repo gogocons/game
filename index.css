@@ -12,7 +12,7 @@ body {
   color: rgb(143, 154, 161);
   text-transform: uppercase;
   justify-content: center;
-  margin: 0 0 1% 0;
+  margin-bottom: 1%;
 }
 
 .interact-box {
@@ -20,17 +20,19 @@ body {
   border: 2px solid rgb(12, 14, 15);
   border-radius: 12px;
   text-align: center;
-  justify-content: center;
   margin: auto;
-  max-width: fit-content;
+}
+
+.info-containers {
+  align-items: flex-end;
+  justify-content: space-between;
+  border: 2px solid rgb(12, 14, 15);
+  border-radius: 12px;
+  margin-bottom: 1%;
 }
 
 .info-box {
-  padding: 1%;
-  margin: 0% 1% 1% 1%;
-  border: 2px solid rgb(12, 14, 15);
-  border-radius: 12px;
-  flex-basis: 100%;
+  padding: 2%;
 }
 
 .info-box img {
