@@ -247,7 +247,7 @@ async function startGameLoop() {
 }
 function displayChoices() {
   const container = document.getElementById('user-choices-container');
-  container.style.display = 'inline-block';
+  container.style.display = 'block';
 }
 function waitForChoice() {
   const fightButton = document.getElementById('fight');

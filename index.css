@@ -17,13 +17,20 @@ body {
 
 .interact-box {
   padding: 1%;
-  border-style: outset;
+  border: 2px solid rgb(12, 14, 15);
+  border-radius: 12px;
+  text-align: center;
+  justify-content: center;
+  margin: auto;
+  max-width: fit-content;
 }
 
 .info-box {
   padding: 1%;
-  margin: 0 1% 0 0;
-  border-style: outset;
+  margin: 0% 1% 1% 1%;
+  border: 2px solid rgb(12, 14, 15);
+  border-radius: 12px;
+  flex-basis: 100%;
 }
 
 .info-box img {
