@@ -1,26 +1,31 @@
 <html>
-
   <head>
     <title>gogoborn</title>
-    <link rel="shortcut icon" href="./images/skyrim.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="index.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./images/skyrim.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
 
   <body id="body">
-
     <header class="page-header">
       <div>
         <h1>gogoborn</h1>
         <p>"You're finally awake."</p>
       </div>
-      <img src="./images/skyrim.png" height="100">
+      <img src="./images/skyrim.png" height="100" />
     </header>
 
-    <div class="interact-box" id="character-select-container" style="display: block;">
+    <div
+      class="interact-box"
+      id="character-select-container"
+      style="display: block"
+    >
       <h2>Choose a Class</h2>
 
       <button id="warrior" data-class="warrior">Warrior</button>
@@ -28,32 +33,34 @@
       <button id="mage" data-class="mage">Mage</button>
     </div>
 
-    <div class="info-containers" id="info-containers" style="display: none;">
-
-      <div class="info-box" id="character-info-container" style="display: none;">
+    <div class="info-containers" id="info-containers" style="display: none">
+      <div class="info-box" id="character-info-container" style="display: none">
         <h2>Player</h2>
-        <div id="character-info"></div><br>
+        <div id="character-info"></div>
+        <br />
         <div>
-          <img id="character-image" src="" style="float: left; max-height: 200px;">
+          <img
+            id="character-image"
+            src=""
+            style="float: left; max-height: 200px"
+          />
         </div>
       </div>
 
-      <div class="info-box" id="mob-info-container" style="display: none;">
+      <div class="info-box" id="mob-info-container" style="display: none">
         <h2>Enemy</h2>
-        <div id="mob-info"></div><br>
+        <div id="mob-info"></div>
+        <br />
         <div>
-          <img id="mob-image" src="" style="float: right; max-height: 200px;">
+          <img id="mob-image" src="" style="float: right; max-height: 200px" />
         </div>
       </div>
     </div>
-    
 
-    <div class="interact-box" id="user-choices-container" style="display: none;">
+    <div class="interact-box" id="user-choices-container" style="display: none">
       <h2>Choose a Move</h2>
       <div id="choices">
-        <button id="fight">
-          Attack
-        </button>
+        <button id="fight">Attack</button>
         <button id="power" onclick="alert('function not yet added')">
           Power Attack
         </button>
@@ -65,5 +72,4 @@
 
     <script src="bundle.js"></script>
   </body>
-
 </html>

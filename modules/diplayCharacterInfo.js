@@ -5,7 +5,7 @@ function displayCharacterInfo(character) {
   let characeterInfoString = `Name: ${character.getName()} <br/>`;
   characeterInfoString += `Level ${character.getLevel()} ${character.getClassName()} <br/>`;
   characeterInfoString += `${character.getStatsString()}`;
-  
+
   container.innerHTML = characeterInfoString;
 }
 
