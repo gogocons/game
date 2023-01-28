@@ -237,7 +237,6 @@ async function startGameLoop() {
 
     // then I want to wait until a user clicks them
     const choice = await waitForChoice();
-    console.log(choice);
     battleLogic(choice);
 
     // TODO refactor into a game logic function that changes action per choice
@@ -247,13 +246,17 @@ async function startGameLoop() {
         setTimeout(() => {
           toggleChoicesBox();
         }, 1000);
-        console.log("choice is fight, new function test");
         const animationClass = "animation-fight";
+
+        // if to check if character is alive before dealing damage
+        // TODO: should end combat if dead (not possible in current stage)
         if (character.health > 0) {
           triggerAnimation(mobImage, animationClass);
           activeMob.health -= myDamage;
           displayMobInfo(activeMob);
         }
+
+        // if to check if mob is dead to prevent damage dealt
         if (activeMob.health > 0) {
           setTimeout(() => {
             triggerAnimation(characterImage, animationClass);
@@ -262,14 +265,14 @@ async function startGameLoop() {
           }, 1000);
         }
       } else if (choice === "power") {
-        console.log("power attack chosen");
+        // TODO: add logic for this choice
       } else if (choice === "heal") {
-        console.log("heal chosen");
+        // TODO: add logic for this choice
       }
     }
   }
 
-  // TODO add function to get new mob, levelup feature
+  // TODO: add function to get new mob, levelup after dead mob
   setTimeout(() => {
     alert("you beat the alpha demo! great work!");
   }, 2000);
@@ -284,6 +287,8 @@ function toggleChoicesBox() {
   const container = document.getElementById("user-choices-container");
   container.style.display = container.style.display == "block" ? "none" : "block";
 }
+
+// awaiting promise from a button press
 function waitForChoice() {
   const fightButton = document.getElementById("fight");
   const powerButton = document.getElementById("power");
@@ -292,10 +297,11 @@ function waitForChoice() {
     fightButton.addEventListener("click", function () {
       resolve("fight");
     });
-    // TODO figure out what game actions I want to use
+    // TODO: which game actions I want to use, possibly change name per class selection
     powerButton.addEventListener("click", function () {
       resolve("power");
     });
+    // TODO: if using heal, need characters to have potions
     healButton.addEventListener("click", function () {
       resolve("heal");
     });
@@ -305,12 +311,10 @@ function waitForChoice() {
 // this function triggers animation by adding the class to the image elemnt
 function triggerAnimation(target, animationClass) {
   target.classList.add(animationClass);
-  console.log("animation class added");
   // timeout is set to same time as animation length
   setTimeout(() => {
     target.classList.remove(animationClass);
   }, 500);
-  console.log("animation class removed");
 }
 
 },{"./mobs/mobs":10,"./modules/chooseClass":11,"./modules/diplayCharacterInfo":12,"./modules/displayMobInfo":13,"./modules/enableCharacterInfoDisplays":14,"./modules/setActiveMob":15}],7:[function(require,module,exports){
