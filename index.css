@@ -32,13 +32,7 @@ body {
 }
 
 .info-box {
-  padding: 2%;
-}
-
-.info-box img {
-  max-height: 200px;
-  display: block;
-  margin: auto;
+  padding: 5%;
 }
 
 .animation-fight {

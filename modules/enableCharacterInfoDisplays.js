@@ -1,6 +1,6 @@
 // hides the character select container, and unhides the character info container,
 // and the mob info container
-function toggleCharacterInfoDisplays() {
+function enableCharacterInfoDisplays() {
   const selectContainer = document.getElementById("character-select-container");
   selectContainer.style.display = 'none';
 
@@ -14,4 +14,4 @@ function toggleCharacterInfoDisplays() {
   mobContainer.style.display = 'inline-block';
 }
 
-module.exports = toggleCharacterInfoDisplays;
+module.exports = enableCharacterInfoDisplays;
